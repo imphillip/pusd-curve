@@ -1,6 +1,7 @@
 // Script to deploy the BondingCurveExchange contract
 
 const hre = require("hardhat");
+const { ethers } = require("hardhat");
 
 async function main() {
   console.log("Deploying BondingCurveExchange contract...");
@@ -20,8 +21,15 @@ async function main() {
   console.log(`Using USDT address: ${usdtAddress}`);
   console.log(`Using pUSD address: ${pusdAddress}`);
 
-  // Deploy the contract
-  const exchange = await BondingCurveExchange.deploy(usdtAddress, pusdAddress);
+  // Deploy the contract with BNB Chain gas price setting
+  const exchange = await BondingCurveExchange.deploy(
+    usdtAddress, 
+    pusdAddress,
+    {
+      gasPrice: ethers.utils.parseUnits("5", "gwei")
+      // Gas limit will be automatically estimated
+    }
+  );
   await exchange.waitForDeployment();
 
   const exchangeAddress = await exchange.getAddress();
