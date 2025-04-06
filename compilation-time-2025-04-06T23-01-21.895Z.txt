@@ -1,0 +1,6 @@
+Compilation time: 3.35 seconds
+Date: 2025-04-06T23:01:21.895Z
+Solidity version: 0.8.28
+Optimizer enabled: true
+Optimizer runs: 2000
+viaIR: true

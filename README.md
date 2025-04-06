@@ -105,6 +105,27 @@ await pusdToken.transfer(exchangeAddress, ethers.utils.parseEther("4000000000000
 npx hardhat verify --network bsc <contract-address> <usdt-address> <pusd-address>
 ```
 
+## Optimized Compilation
+
+This project uses optimized compilation settings to improve performance and reduce contract size. The optimizations include:
+
+- Solidity optimizer with 2000 runs
+- Yul optimizer with advanced settings
+- Parallel compilation using multiple CPU cores
+- Enhanced caching for faster builds
+- Contract size monitoring
+
+To compile the contracts with these optimizations:
+
+```bash
+npm run compile       # Standard compilation
+npm run compile:clean # Clean and compile
+npm run compile:time  # Measure compilation time
+npm run size          # Show contract sizes
+```
+
+For more details on the compilation optimizations, see [COMPILATION.md](./COMPILATION.md).
+
 ## Usage
 
 ### DApp Integration

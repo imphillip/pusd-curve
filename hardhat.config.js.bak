@@ -1,11 +1,5 @@
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config();
-require("hardhat-contract-sizer");
-
-// Enable parallel compilation
-const os = require('os');
-const numCores = os.cpus().length;
-const maxParallelCompilation = Math.max(1, numCores - 1); // Leave one core free for system tasks
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -51,17 +45,5 @@ module.exports = {
   },
   gasReporter: {
     enabled: false
-  },
-  contractSizer: {
-    alphaSort: true,
-    disambiguatePaths: false,
-    runOnCompile: true,
-    strict: true
-  },
-  // Explicitly enable parallel compilation
-  parallel: true,
-  // Set the maximum number of parallel compilation jobs
-  maxParallelCompilation: maxParallelCompilation,
-  // Improve caching
-  cacheHardhatCompilationSolcInput: true
+  }
 };

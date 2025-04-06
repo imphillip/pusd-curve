@@ -3,7 +3,19 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "hardhat test",
+    "compile": "hardhat compile",
+    "compile:force": "hardhat compile --force",
+    "compile:clean": "hardhat clean && hardhat compile",
+    "compile:profile": "HARDHAT_PROFILE=true hardhat compile",
+    "compile:time": "node scripts/measure-compile-time.js",
+    "size": "hardhat size-contracts",
+    "deploy": "hardhat run scripts/deploy.js",
+    "deploy:bsc": "hardhat run scripts/deploy.js --network bsc",
+    "deploy:testnet": "hardhat run scripts/deploy.js --network bscTestnet",
+    "gas": "REPORT_GAS=true hardhat test",
+    "coverage": "hardhat coverage",
+    "flatten": "hardhat flatten contracts/BondingCurveExchange.sol > BondingCurveExchange.flat.sol"
   },
   "keywords": [],
   "author": "",
@@ -11,7 +23,8 @@
   "description": "",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
-    "hardhat": "^2.22.19"
+    "hardhat": "^2.22.19",
+    "hardhat-contract-sizer": "^2.10.0"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.2.0",
