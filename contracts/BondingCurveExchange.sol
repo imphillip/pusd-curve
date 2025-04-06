@@ -117,7 +117,6 @@ contract BondingCurveExchange is Ownable {
             // This is a simplified approach for the integral calculation
             // We're calculating the area under the linear curve
             if (initialRate > STAGE3_RATE) {
-                uint256 remainingDecrease = initialRate - STAGE3_RATE;
                 uint256 remainingPusd = STAGE2_MAX - currentReleased;
                 
                 // Area of a trapezoid = (a + b) * h / 2
