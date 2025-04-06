@@ -25,14 +25,14 @@ contract BondingCurveExchange is Ownable {
     IERC20 public immutable usdt;
     IERC20 public immutable pusd;
     
-    // Constants for bonding curve stages (with 18 decimals)
-    uint256 public constant STAGE1_MAX = 1e12 ether; // 1 trillion pUSD
-    uint256 public constant STAGE2_MAX = 3e12 ether; // 3 trillion pUSD
-    uint256 public constant TOTAL_SUPPLY = 4e12 ether; // 4 trillion pUSD
+    // Constants for bonding curve stages (1e18 decimals)
+    uint256 public constant STAGE1_MAX = 1e12 * 1e18; // 1 trillion pUSD (1e12 * 1e18 wei)
+    uint256 public constant STAGE2_MAX = 3e12 * 1e18; // 3 trillion pUSD (3e12 * 1e18 wei)
+    uint256 public constant TOTAL_SUPPLY = 4e12 * 1e18; // 4 trillion pUSD (4e12 * 1e18 wei)
     
-    // Exchange rates
-    uint256 public constant STAGE1_RATE = 100000; // 1 USDT = 100,000 pUSD
-    uint256 public constant STAGE3_RATE = 1;      // 1 USDT = 1 pUSD
+    // Exchange rates (with 18 decimals)
+    uint256 public constant STAGE1_RATE = 100000 * 1e18; // 1e18 USDT wei = 100000e18 pUSD wei
+    uint256 public constant STAGE3_RATE = 1 * 1e18;      // 1e18 USDT wei = 1e18 pUSD wei
     
     // Track released pUSD
     uint256 public released;
@@ -80,6 +80,7 @@ contract BondingCurveExchange is Ownable {
      */
     function calculatePurchaseAmount(uint256 usdtAmount) public view returns (uint256) {
         require(usdtAmount > 0, "Amount must be greater than 0");
+        require(usdtAmount % 1 == 0, "Amount must be integer wei units"); // 确保最小单位精度
         
         uint256 remainingUsdt = usdtAmount;
         uint256 totalPusd = 0;
@@ -88,7 +89,7 @@ contract BondingCurveExchange is Ownable {
         // Stage 1: Fixed rate of 100,000 pUSD per USDT
         if (currentReleased < STAGE1_MAX && remainingUsdt > 0) {
             uint256 stage1Remaining = STAGE1_MAX - currentReleased;
-            uint256 stage1PusdAmount = remainingUsdt * STAGE1_RATE;
+            uint256 stage1PusdAmount = (remainingUsdt * STAGE1_RATE) / 1e18;
             
             if (currentReleased + stage1PusdAmount <= STAGE1_MAX) {
                 // All USDT can be used in Stage 1
@@ -98,7 +99,7 @@ contract BondingCurveExchange is Ownable {
             } else {
                 // Only part of USDT can be used in Stage 1
                 totalPusd += stage1Remaining;
-                remainingUsdt -= stage1Remaining / STAGE1_RATE;
+                remainingUsdt -= (stage1Remaining * 1e18) / STAGE1_RATE;
                 currentReleased = STAGE1_MAX;
             }
         }
@@ -121,7 +122,7 @@ contract BondingCurveExchange is Ownable {
                 
                 // Area of a trapezoid = (a + b) * h / 2
                 // where a and b are the parallel sides (rates) and h is the height (pUSD amount)
-                usdtToReachStage3 = (remainingPusd * 2) / (initialRate + STAGE3_RATE);
+                usdtToReachStage3 = (remainingPusd * 2 * 1e18) / (initialRate + STAGE3_RATE);
             } else {
                 // If we're already at or below STAGE3_RATE, use that rate
                 usdtToReachStage3 = (STAGE2_MAX - currentReleased) / STAGE3_RATE;
@@ -131,7 +132,7 @@ contract BondingCurveExchange is Ownable {
                 // Calculate pUSD for the partial stage 2 purchase
                 // This is an approximation using the average rate
                 uint256 avgRate = (initialRate + getRate()) / 2;
-                uint256 stage2PusdAmount = remainingUsdt * avgRate;
+                uint256 stage2PusdAmount = (remainingUsdt * avgRate) / 1e18;
                 
                 // Ensure we don't exceed STAGE2_MAX
                 if (currentReleased + stage2PusdAmount > STAGE2_MAX) {
@@ -152,7 +153,8 @@ contract BondingCurveExchange is Ownable {
         // Stage 3: Fixed rate of 1 pUSD per USDT
         if (currentReleased < TOTAL_SUPPLY && remainingUsdt > 0) {
             uint256 stage3Remaining = TOTAL_SUPPLY - currentReleased;
-            uint256 stage3PusdAmount = remainingUsdt * STAGE3_RATE;
+            // STAGE3_RATE = 1e18，直接使用剩余USDT数量
+            uint256 stage3PusdAmount = remainingUsdt; 
             
             if (currentReleased + stage3PusdAmount <= TOTAL_SUPPLY) {
                 // All remaining USDT can be used in Stage 3
@@ -163,6 +165,7 @@ contract BondingCurveExchange is Ownable {
             }
         }
         
+        require(totalPusd > 0, "Resulting pUSD amount must be positive");
         return totalPusd;
     }
     
@@ -173,6 +176,7 @@ contract BondingCurveExchange is Ownable {
      */
     function buy(uint256 usdtAmount) external returns (uint256) {
         require(usdtAmount > 0, "Amount must be greater than 0");
+        require(msg.sender != address(0), "Invalid sender address");
         
         // Calculate pUSD amount based on bonding curve
         uint256 pusdAmount = calculatePurchaseAmount(usdtAmount);
@@ -193,6 +197,9 @@ contract BondingCurveExchange is Ownable {
         // Update released amount
         released += pusdAmount;
         
+        // 添加事件参数验证
+        require(pusdAmount > 0, "Invalid pUSD amount");
+        require(msg.sender != address(0), "Invalid buyer address");
         emit TokensPurchased(msg.sender, usdtAmount, pusdAmount);
         
         return pusdAmount;
@@ -213,14 +220,4 @@ contract BondingCurveExchange is Ownable {
         emit UsdtWithdrawn(to, balance);
     }
     
-    /**
-     * @dev FOR TESTING ONLY: Sets the released amount to a specific value
-     * @param amount The amount to set released to
-     * @notice This function should be removed or disabled in production
-     */
-    function setReleased(uint256 amount) external onlyOwner {
-        // This function is for testing purposes only
-        // It allows setting the released amount to test different stages of the bonding curve
-        released = amount;
-    }
 }
