@@ -26,7 +26,7 @@ async function main() {
     usdtAddress, 
     pusdAddress,
     {
-      gasPrice: ethers.utils.parseUnits("5", "gwei")
+      gasPrice: ethers.parseUnits("5", "gwei")
       // Gas limit will be automatically estimated
     }
   );
