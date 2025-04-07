@@ -1,6 +1,7 @@
 import React, { useState, useEffect, createContext } from 'react';
 import { ethers } from 'ethers';
 import detectEthereumProvider from '@metamask/detect-provider';
+import { Analytics } from '@vercel/analytics/react';
 import Navbar from './components/Navbar';
 import ExchangeInterface from './components/ExchangeInterface';
 
@@ -123,51 +124,36 @@ function App() {
   }, []);
 
   return (
-    <WalletContext.Provider value={{ 
-      provider, 
-      signer, 
-      account, 
-      isConnected, 
-      chainId,
-      connectWallet,
-      disconnectWallet
-    }}>
-      <div>
-        <Navbar />
-        <main className="main">
-          <div className="main-content">
-            <h1 className="page-title">pUSD Bonding Curve Exchange</h1>
-            
-            {error && (
-              <div className="error-message">
-                {error}
-              </div>
-            )}
-            
-            {isConnected ? (
+    <>
+      <Analytics />
+      <WalletContext.Provider value={{ 
+        provider, 
+        signer, 
+        account, 
+        isConnected, 
+        chainId,
+        connectWallet,
+        disconnectWallet
+      }}>
+        <div>
+          <Navbar />
+          <main className="main">
+            <div className="main-content">
+              {error && (
+                <div className="error-message">
+                  {error}
+                </div>
+              )}
+              
               <ExchangeInterface />
-            ) : (
-              <div className="card" style={{textAlign: 'center', padding: '3rem 1rem'}}>
-                <h2 style={{fontSize: '1.25rem', fontWeight: '600', marginBottom: '1rem'}}>Connect your wallet to get started</h2>
-                <p style={{color: '#9ca3af', marginBottom: '1.5rem'}}>
-                  Exchange USDT for pUSD using our bonding curve mechanism
-                </p>
-                <button 
-                  onClick={connectWallet}
-                  className="btn btn-primary"
-                  style={{padding: '0.75rem 2rem'}}
-                >
-                  Connect Wallet
-                </button>
-              </div>
-            )}
-          </div>
-        </main>
-        <footer className="footer">
-          <p>© {new Date().getFullYear()} pUSD Bonding Curve Exchange</p>
-        </footer>
-      </div>
-    </WalletContext.Provider>
+            </div>
+          </main>
+          <footer className="footer">
+            <p>© {new Date().getFullYear()} pUSD Bonding Vault</p>
+          </footer>
+        </div>
+      </WalletContext.Provider>
+    </>
   );
 }
 

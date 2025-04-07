@@ -14,7 +14,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container container">
         <div className="navbar-brand">
-          pUSD Exchange
+          pUSD Bonding Vault
         </div>
         
         <div className="navbar-actions">

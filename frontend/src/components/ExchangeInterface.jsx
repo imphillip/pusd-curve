@@ -304,6 +304,17 @@ const ExchangeInterface = () => {
         </div>
       )}
       
+      {/* Rules Box */}
+      <div className="rules-box">
+        <div className="rules-title">Welcome to the pUSD Bonding Vault</div>
+        <ul className="rules-list">
+          <li>You can mint pUSD using USDT at a price determined by a bonding curve.</li>
+          <li>The vault is one-way: you cannot redeem pUSD back into USDT.</li>
+          <li>In the early stage, 1 USDT can mint up to 100,000 pUSD.</li>
+          <li>As more pUSD is minted, the rate decreases toward 1:1.</li>
+        </ul>
+      </div>
+      
       {/* Exchange Info */}
       <div className="exchange-info">
         <div className="info-grid">
@@ -326,6 +337,13 @@ const ExchangeInterface = () => {
         </div>
       </div>
 
+      {/* Connection Prompt */}
+      {!isConnected && (
+        <div className="connection-prompt">
+          ▸ Connect your wallet to start exchanging USDT for pUSD
+        </div>
+      )}
+      
       {/* Exchange Form */}
       <div className="exchange-form">
         <div className="form-group">
@@ -335,8 +353,9 @@ const ExchangeInterface = () => {
               type="text"
               value={usdtAmount}
               onChange={handleUsdtAmountChange}
-              placeholder="0.0"
+              placeholder={isConnected ? "0.0" : "Connect wallet to input"}
               className="input-field"
+              disabled={!isConnected}
             />
             <div className="input-addon">
               <span className="balance-text">Balance: {formatNumber(formatTokenAmount(usdtBalance))}</span>
@@ -381,10 +400,17 @@ const ExchangeInterface = () => {
           </div>
         )}
 
-        {!isApproved ? (
+        {!isConnected ? (
+          <button
+            disabled={true}
+            className="btn btn-primary full-width-button"
+          >
+            Connect Wallet to Continue
+          </button>
+        ) : !isApproved ? (
           <button
             onClick={approveUsdt}
-            disabled={isApproving || !account || !isBscNetwork}
+            disabled={isApproving || !isBscNetwork}
             className="btn btn-primary full-width-button"
           >
             {isApproving ? (
@@ -402,7 +428,7 @@ const ExchangeInterface = () => {
         ) : (
           <button
             onClick={buyPusd}
-            disabled={isBuying || !usdtAmount || parseFloat(usdtAmount) === 0 || !account || !isBscNetwork}
+            disabled={isBuying || !usdtAmount || parseFloat(usdtAmount) === 0 || !isBscNetwork}
             className="btn btn-primary full-width-button"
           >
             {isBuying ? (
