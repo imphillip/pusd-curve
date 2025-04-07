@@ -1,6 +1,6 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
-const { parseEther } = ethers.utils;
+const { parseEther } = require("ethers");
 
 describe("BondingCurveExchange", function () {
   let bondingCurveExchange;

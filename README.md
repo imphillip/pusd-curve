@@ -80,10 +80,12 @@ npm install
 2. Create a `.env` file with the following variables:
 
 ```
-PRIVATE_KEY=your_private_key
+# Use hardware wallet or secure enclave for production
 USDT_ADDRESS=usdt_token_address
 PUSD_ADDRESS=pusd_token_address
 ```
+
+**Security Note:** Never commit sensitive information to version control. Use `.env.local` for local development and encrypted secrets for CI/CD.
 
 3. Deploy the contract:
 

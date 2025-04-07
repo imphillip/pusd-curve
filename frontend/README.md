@@ -11,11 +11,19 @@ A decentralized application for exchanging USDT for pUSD using a bonding curve m
 - Automatic approval flow for USDT
 - Real-time price calculation
 
-## Contract Addresses (BSC Mainnet)
+## Environment Configuration
 
-- BondingCurveExchange: `0x46ddd8e5273f46360ae1eF903950a7c3Ba0c0848`
-- pUSD: `0x980e9171873a5D77cD14ca4F3d45528B432c341b`
-- USDT: `0x55d398326f99059fF775485246999027B3197955`
+```bash
+# .env.local
+VITE_CONTRACT_EXCHANGE=your_exchange_address
+VITE_CONTRACT_PUSD=your_pusd_address
+VITE_CONTRACT_USDT=your_usdt_address
+```
+
+**Security Reminder:**
+- Store production addresses in environment variables
+- Use different keys for test/mainnet environments
+- Regularly rotate access credentials
 
 ## Development
 

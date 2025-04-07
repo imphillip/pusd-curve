@@ -1,9 +1,19 @@
 node_modules
 .env
+*.bak
+compilation-time-*.txt
+.DS_Store
+.idea
+.vscode
+*.log
 
 # Hardhat files
 /cache
 /artifacts
+/typechain
+/typechain-types
+/coverage
+/coverage.json
 
 # TypeChain files
 /typechain
