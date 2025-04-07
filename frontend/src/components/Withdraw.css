@@ -1,0 +1,171 @@
+.withdraw-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  color: #fff;
+}
+
+.withdraw-title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #f0f0f0;
+}
+
+.connect-wallet-section {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.connect-wallet-button {
+  background-color: #3b82f6;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 1rem;
+}
+
+.connect-wallet-button:hover {
+  background-color: #2563eb;
+}
+
+.status-section {
+  background-color: rgba(30, 41, 59, 0.7);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.address {
+  font-family: monospace;
+  word-break: break-all;
+}
+
+.status-positive {
+  color: #10b981;
+  font-weight: bold;
+}
+
+.status-negative {
+  color: #ef4444;
+  font-weight: bold;
+}
+
+.withdraw-form {
+  background-color: rgba(30, 41, 59, 0.7);
+  padding: 2rem;
+  border-radius: 0.5rem;
+}
+
+.input-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.address-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #4b5563;
+  border-radius: 0.375rem;
+  background-color: #1f2937;
+  color: #f9fafb;
+  font-family: monospace;
+}
+
+.address-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+.address-input.invalid {
+  border-color: #ef4444;
+}
+
+.validation-error {
+  color: #ef4444;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.withdraw-button {
+  width: 100%;
+  background-color: #3b82f6;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.withdraw-button:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+.withdraw-button:disabled {
+  background-color: #6b7280;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.transaction-status {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: rgba(17, 24, 39, 0.7);
+  border-radius: 0.375rem;
+  text-align: center;
+}
+
+.tx-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+.tx-link:hover {
+  color: #60a5fa;
+}
+
+.not-owner-message {
+  text-align: center;
+  padding: 2rem;
+  background-color: rgba(30, 41, 59, 0.7);
+  border-radius: 0.5rem;
+  color: #ef4444;
+  font-weight: bold;
+}
+
+.error-message {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: rgba(220, 38, 38, 0.2);
+  border: 1px solid #ef4444;
+  border-radius: 0.375rem;
+  color: #ef4444;
+}
+
+.back-link {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.back-link a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.back-link a:hover {
+  text-decoration: underline;
+}

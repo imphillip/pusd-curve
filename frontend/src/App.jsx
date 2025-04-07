@@ -4,12 +4,15 @@ import detectEthereumProvider from '@metamask/detect-provider';
 import { Analytics } from '@vercel/analytics/react';
 import Navbar from './components/Navbar';
 import ExchangeInterface from './components/ExchangeInterface';
+import Withdraw from './components/Withdraw';
 
 // Create a context for wallet data
 export const WalletContext = createContext();
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  const isWithdrawPage = window.isWithdrawPage || false;
   const [provider, setProvider] = useState(null);
   const [signer, setSigner] = useState(null);
   const [account, setAccount] = useState(null);
@@ -123,6 +126,34 @@ function App() {
     document.documentElement.classList.add('dark');
   }, []);
 
+  // Listen for URL changes
+  useEffect(() => {
+    const handleLocationChange = () => {
+      setCurrentPath(window.location.pathname);
+    };
+
+    // Listen for popstate event (browser back/forward buttons)
+    window.addEventListener('popstate', handleLocationChange);
+    
+    // Listen for click events on links to handle client-side routing
+    const handleLinkClick = (e) => {
+      // Only handle links within our app
+      if (e.target.tagName === 'A' && e.target.href && e.target.href.startsWith(window.location.origin)) {
+        e.preventDefault();
+        const url = new URL(e.target.href);
+        setCurrentPath(url.pathname);
+        window.history.pushState({}, '', url.pathname);
+      }
+    };
+    
+    document.addEventListener('click', handleLinkClick);
+
+    return () => {
+      window.removeEventListener('popstate', handleLocationChange);
+      document.removeEventListener('click', handleLinkClick);
+    };
+  }, []);
+
   return (
     <>
       <Analytics />
@@ -145,7 +176,11 @@ function App() {
                 </div>
               )}
               
-              <ExchangeInterface />
+              {isWithdrawPage || currentPath === '/withdraw' ? (
+                <Withdraw />
+              ) : (
+                <ExchangeInterface />
+              )}
             </div>
           </main>
           <footer className="footer">

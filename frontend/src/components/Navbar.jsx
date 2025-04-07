@@ -1,8 +1,32 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import { ethers } from 'ethers';
 import { WalletContext } from '../App';
+import { EXCHANGE_ADDRESS } from '../contracts/constants';
+import { exchangeABI } from '../contracts/abis';
 
 const Navbar = () => {
-  const { account, isConnected, connectWallet, disconnectWallet } = useContext(WalletContext);
+  const { account, isConnected, connectWallet, disconnectWallet, provider } = useContext(WalletContext);
+  const [isOwner, setIsOwner] = useState(false);
+
+  // Check if connected account is the owner
+  useEffect(() => {
+    const checkOwner = async () => {
+      if (isConnected && account && provider) {
+        try {
+          const contract = new ethers.Contract(EXCHANGE_ADDRESS, exchangeABI, provider);
+          const ownerAddress = await contract.owner();
+          setIsOwner(account.toLowerCase() === ownerAddress.toLowerCase());
+        } catch (err) {
+          console.error('Error checking owner status:', err);
+          setIsOwner(false);
+        }
+      } else {
+        setIsOwner(false);
+      }
+    };
+
+    checkOwner();
+  }, [isConnected, account, provider]);
 
   // Format address for display
   const formatAddress = (address) => {
@@ -15,6 +39,14 @@ const Navbar = () => {
       <div className="navbar-container container">
         <div className="navbar-brand">
           pUSD Bonding Vault
+        </div>
+        
+        <div className="navbar-menu">
+          {isOwner && (
+            <a href="/withdraw.html" className="admin-link">
+              Withdraw USDT
+            </a>
+          )}
         </div>
         
         <div className="navbar-actions">
