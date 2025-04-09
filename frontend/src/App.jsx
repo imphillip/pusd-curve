@@ -184,7 +184,7 @@ function App() {
             </div>
           </main>
           <footer className="footer">
-            <p>© {new Date().getFullYear()} pUSD Bonding Vault</p>
+            <p>© {new Date().getFullYear()} pUSD Bonding Vault | <a href="https://github.com/imphillip/pusd-curve" target="_blank" rel="noopener noreferrer">GitHub</a></p>
           </footer>
         </div>
       </WalletContext.Provider>

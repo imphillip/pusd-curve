@@ -339,6 +339,40 @@ a:hover {
   margin-bottom: 0.25rem;
 }
 
+/* Contract address box */
+.contract-address-box {
+  font-family: var(--monospace-font);
+  border: 1px solid #6366f1;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  background-color: rgba(99, 102, 241, 0.1);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.contract-address-title {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #818cf8;
+}
+
+.contract-address-value {
+  background-color: rgba(31, 41, 55, 0.5);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  word-break: break-all;
+  margin-bottom: 0.5rem;
+  user-select: all;
+  cursor: pointer;
+}
+
+.contract-address-hint {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
 .ascii-border {
   font-family: var(--monospace-font);
   color: #6b7280;

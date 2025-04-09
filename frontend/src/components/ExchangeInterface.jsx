@@ -315,6 +315,13 @@ const ExchangeInterface = () => {
         </ul>
       </div>
       
+      {/* PUSD Contract Address */}
+      <div className="contract-address-box">
+        <div className="contract-address-title">pUSD Contract Address</div>
+        <div className="contract-address-value">{PUSD_ADDRESS}</div>
+        <div className="contract-address-hint">Add to your wallet to view pUSD balance</div>
+      </div>
+      
       {/* Exchange Info */}
       <div className="exchange-info">
         <div className="info-grid">
